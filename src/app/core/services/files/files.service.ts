@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { URLSConfig } from '../URLSConfig';
 import {Observable} from 'rxjs';
 import {Item} from "../../models/Item";
@@ -11,8 +11,13 @@ export class FilesService {
 
   	constructor(private http: HttpClient) { }
 
-  	getFilesList() : Observable<any> {
-		return this.http.get<Item[]>(URLSConfig.FOLDERS_AND_FILES);
+	getItemsList(id?: any) : Observable<any> {
+  		if(id) {
+			const params = new HttpParams({fromString: 'parentId='+id});
+			return this.http.get<Item[]>(URLSConfig.FOLDERS_AND_FILES, {params: params});
+		}else{
+			return this.http.get<Item[]>(URLSConfig.FOLDERS_AND_FILES);
+		}
 	}
 
 	createFolder(folder_name: any) : Observable<any> {

@@ -5,5 +5,5 @@ export class Item {
 	folder: boolean;
 	creation: string;
 	modification: string;
-	_links : any;
+	//_links : any;
 }

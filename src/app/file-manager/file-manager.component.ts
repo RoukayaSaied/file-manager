@@ -14,6 +14,7 @@ import {UploadFileDialogComponent} from "./dialogs/upload-file-dialog/upload-fil
 })
 export class FileManagerComponent implements OnInit {
 	files: Item [];
+	currentRoot: any;
 	path = ""
 	folderAdded: ItemCreate;
 
@@ -27,7 +28,7 @@ export class FileManagerComponent implements OnInit {
 	}
 
 	findAllFiles() {
-		this.filesService.getFilesList()
+		this.filesService.getItemsList(this.currentRoot ? this.currentRoot.id : '')
 			.subscribe(
 				res => {
 					this.files = res.items;
@@ -35,6 +36,7 @@ export class FileManagerComponent implements OnInit {
 					console.log(error);
 				});
 	}
+
 
 
 	openNewFolderDialog() {
@@ -96,8 +98,13 @@ export class FileManagerComponent implements OnInit {
 		);
 	}
 
-	navigate(element: any) {
-		console.log(element);
+	navigateToFolder(element: Item) {
+		if(element.folder){
+			this.currentRoot = element;
+			this.findAllFiles();
+			//this.currentPath = this.pushToPath(this.currentPath, element.name);
+			//this.canNavigateUp = true;
+		}
 	}
 
 	openMenu(event: MouseEvent, viewChild: MatMenuTrigger) {
