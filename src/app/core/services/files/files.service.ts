@@ -20,8 +20,23 @@ export class FilesService {
 		}
 	}
 
-	createFolder(folder_name: any) : Observable<any> {
-		return this.http.post<any[]>(URLSConfig.FOLDERS_AND_FILES, folder_name);
+	getItemById(id: any) : Observable<any> {
+  		return this.http.get<Item[]>(URLSConfig.FOLDERS_AND_FILES + '/' + id + '/path');
+
+	}
+
+	renameItem(id: any, new_name: any) : Observable<any> {
+		return this.http.patch<Item[]>(URLSConfig.FOLDERS_AND_FILES + '/' + id, {name: new_name});
+
+	}
+
+	createFolder(folder_name: any, id?: any) : Observable<any> {
+		if(id) {
+			const params = new HttpParams({fromString: 'parentId='+id});
+			return this.http.post<any[]>(URLSConfig.FOLDERS_AND_FILES, folder_name, {params: params});
+		}else {
+			return this.http.post<any[]>(URLSConfig.FOLDERS_AND_FILES, folder_name);
+		}
 	}
 
 	uploadNewFile(file: File) : Observable<any> {

@@ -17,10 +17,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {FilesService} from "../core/services/files/files.service";
 import { AddFolderDialogComponent } from './dialogs/add-folder-dialog/add-folder-dialog.component';
 import { UploadFileDialogComponent } from './dialogs/upload-file-dialog/upload-file-dialog.component';
+import { RenameItemDialogComponent } from './dialogs/rename-item-dialog/rename-item-dialog.component';
 
 @NgModule({
-  	declarations: [FileManagerComponent, AddFolderDialogComponent, UploadFileDialogComponent],
-	entryComponents : [AddFolderDialogComponent, UploadFileDialogComponent],
+  	declarations: [FileManagerComponent, AddFolderDialogComponent, UploadFileDialogComponent, RenameItemDialogComponent],
+	entryComponents : [AddFolderDialogComponent, UploadFileDialogComponent, RenameItemDialogComponent],
   	imports: [
     	CommonModule,
 		MatToolbarModule,

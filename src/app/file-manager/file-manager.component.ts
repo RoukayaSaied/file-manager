@@ -6,6 +6,7 @@ import {AddFolderDialogComponent} from "./dialogs/add-folder-dialog/add-folder-d
 import {MatDialog, MatMenuTrigger} from "@angular/material";
 import {ItemCreate} from "../core/models/ItemCreate";
 import {UploadFileDialogComponent} from "./dialogs/upload-file-dialog/upload-file-dialog.component";
+import {RenameItemDialogComponent} from "./dialogs/rename-item-dialog/rename-item-dialog.component";
 
 @Component({
 	selector: 'fl-file-manager',
@@ -14,8 +15,10 @@ import {UploadFileDialogComponent} from "./dialogs/upload-file-dialog/upload-fil
 })
 export class FileManagerComponent implements OnInit {
 	files: Item [];
+	searchFile: Item;
 	currentRoot: any;
-	path = ""
+	currentPath: string = '';
+	canNavigateUp = false;
 	folderAdded: ItemCreate;
 
 	constructor(private filesService: FilesService,
@@ -38,6 +41,17 @@ export class FileManagerComponent implements OnInit {
 	}
 
 
+	findFileById(id: any) {
+		this.filesService.getItemById(id)
+			.subscribe(
+				res => {
+					this.searchFile = res.items[0];
+				}, error => {
+					console.log(error);
+				});
+	}
+
+
 
 	openNewFolderDialog() {
 		let dialogRef = this.dialog.open(AddFolderDialogComponent);
@@ -54,7 +68,7 @@ export class FileManagerComponent implements OnInit {
 	}
 
 	addNewFolder() {
-		this.filesService.createFolder(this.folderAdded)
+		this.filesService.createFolder(this.folderAdded, this.currentRoot ? this.currentRoot.id : '')
 			.subscribe(
 				res => {
 					console.log(res);
@@ -88,6 +102,17 @@ export class FileManagerComponent implements OnInit {
 
 	}
 
+	openRenameDialog(element: Item) {
+		let dialogRef = this.dialog.open(RenameItemDialogComponent);
+		dialogRef.afterClosed()
+			.subscribe(res => {
+				if (res) {
+					this.renameItem(element.id, res);
+				}
+			});
+
+	}
+
 	downloadElement(element: any) {
 		this.filesService.downloadFile(element.id).subscribe(
 			response => {
@@ -102,13 +127,52 @@ export class FileManagerComponent implements OnInit {
 		if(element.folder){
 			this.currentRoot = element;
 			this.findAllFiles();
-			//this.currentPath = this.pushToPath(this.currentPath, element.name);
-			//this.canNavigateUp = true;
+			this.currentPath =  this.currentPath + element.name + '/';
+			this.canNavigateUp = true;
+			console.log(this.currentRoot);
 		}
+	}
+
+	navigateUp() {
+		if (this.currentRoot && !this.currentRoot.parentId) {
+			this.currentRoot = null;
+			this.canNavigateUp = false;
+			this.findAllFiles();
+		} else {
+			this.filesService.getItemById(this.currentRoot.parentId)
+				.subscribe(
+					res => {
+						this.currentRoot = res.items[0];
+						this.findAllFiles();
+					}, error => {
+						console.log(error);
+					});
+		}
+		this.currentPath = this.popFromPath(this.currentPath);
+	}
+
+	popFromPath(path: string) {
+		let p = path ? path : '';
+		let split = p.split('/');
+		split.splice(split.length - 2, 1);
+		p = split.join('/');
+		return p;
 	}
 
 	openMenu(event: MouseEvent, viewChild: MatMenuTrigger) {
 		event.preventDefault();
 		viewChild.openMenu();
+	}
+
+
+	renameItem(id: any, name: string) {
+		this.filesService.renameItem(id, name)
+			.subscribe(
+				res => {
+					console.log(res);
+					this.findAllFiles();
+				}, error => {
+					console.log(error);
+				});
 	}
 }
