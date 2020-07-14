@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./upload-file-dialog.component.css']
 })
 export class UploadFileDialogComponent implements OnInit {
-	url :any;
+	filename :any;
+	file: any;
+	formData: any;
   constructor() { }
 
   ngOnInit() {
@@ -14,15 +16,22 @@ export class UploadFileDialogComponent implements OnInit {
 
 
   onSelectFile(event: any) {
-  	if (event.target.files && event.target.files[0]) {
-  		var reader = new FileReader();
+	  try {
+		  const file = event.target.files[0];
+		  const fReader = new FileReader()
+		  fReader.readAsDataURL(file)
 
-  		reader.readAsDataURL(event.target.files[0]); // read file as data url
+		  fReader.onloadend = (_event: any) => {
+			  this.filename = file.name;
+			  this.file = _event.target.result;
+			  this.formData = new FormData();
+			  this.formData.append('file', file, this.filename);
+		  }
 
-		reader.onload = (event) => { // called once readAsDataURL is completed
-			//this.url = event.target.result;
-			console.log(event);
-		}
-  	}
+	  } catch (error) {
+		  this.filename = null;
+		  this.file = null;
+		  console.log('no file was selected...');
+	  }
   }
 }

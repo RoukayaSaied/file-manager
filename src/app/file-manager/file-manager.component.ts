@@ -52,7 +52,19 @@ export class FileManagerComponent implements OnInit {
 	}
 
 	addNewFolder() {
-		this.filesService.uploadFolder(this.folderAdded)
+		this.filesService.createFolder(this.folderAdded)
+			.subscribe(
+				res => {
+					console.log(res);
+					this.findAllFiles();
+				}, error => {
+					console.log(error);
+				});
+	}
+
+
+	uploadNewFile(file: any) {
+		this.filesService.uploadNewFile(file)
 			.subscribe(
 				res => {
 					console.log(res);
@@ -67,7 +79,8 @@ export class FileManagerComponent implements OnInit {
 		dialogRef.afterClosed()
 			.subscribe(res => {
 				if (res) {
-					console.log(res);
+					this.uploadNewFile(res);
+
 				}
 			});
 

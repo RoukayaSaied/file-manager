@@ -10,7 +10,7 @@ import {
 	MatInputModule,
 	MatMenuModule,
 	MatToolbarModule,
-	MatCardModule
+	MatCardModule, MatTooltipModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -34,6 +34,7 @@ import { UploadFileDialogComponent } from './dialogs/upload-file-dialog/upload-f
 		MatInputModule,
 		FormsModule,
 		MatButtonModule,
+		MatTooltipModule
   	],
 	exports: [
 		FileManagerComponent,
