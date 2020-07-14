@@ -186,4 +186,15 @@ export class FileManagerComponent implements OnInit {
 					console.log(error);
 				});
 	}
+
+	deleteItem(element: Item) {
+		this.filesService.deleteItem(element.id)
+			.subscribe(
+				res => {
+					console.log(res);
+					this.findAllFiles();
+				}, error => {
+					console.log(error);
+				});
+	}
 }

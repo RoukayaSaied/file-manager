@@ -25,12 +25,10 @@
 
 <mat-menu #rootMenu="matMenu" [overlapTrigger]="false">
 	<ng-template matMenuContent let-element="element">
-
-		<!--button mat-menu-item (click)="deleteElement(element)">
+		<button mat-menu-item (click)="deleteItem(element)">
 			<mat-icon>delete</mat-icon>
 			<span>Delete</span>
-		</button-->
-
+		</button>
 		<button mat-menu-item [matMenuTriggerFor]="moveToMenu" [matMenuTriggerData]="{self: element}">
 			<mat-icon>open_with</mat-icon>
 			<span>Move To</span>

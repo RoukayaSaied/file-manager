@@ -35,6 +35,11 @@ export class FilesService {
 
 	}
 
+	deleteItem(id: any) : Observable<any> {
+		return this.http.delete<any>(URLSConfig.FOLDERS_AND_FILES + '/' + id);
+
+	}
+
 	createFolder(folder_name: any, id?: any) : Observable<any> {
 		if(id) {
 			const params = new HttpParams({fromString: 'parentId='+id});
