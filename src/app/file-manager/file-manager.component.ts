@@ -175,4 +175,15 @@ export class FileManagerComponent implements OnInit {
 					console.log(error);
 				});
 	}
+
+	moveItem( element: Item, moveTo: Item ) {
+		this.filesService.moveItem(element.id, moveTo.id)
+			.subscribe(
+				res => {
+					console.log(res);
+					this.findAllFiles();
+				}, error => {
+					console.log(error);
+				});
+	}
 }

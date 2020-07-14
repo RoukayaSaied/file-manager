@@ -30,6 +30,11 @@ export class FilesService {
 
 	}
 
+	moveItem(id: any, parent_id: any) : Observable<any> {
+		return this.http.patch<Item[]>(URLSConfig.FOLDERS_AND_FILES + '/' + id, {parentId: parent_id});
+
+	}
+
 	createFolder(folder_name: any, id?: any) : Observable<any> {
 		if(id) {
 			const params = new HttpParams({fromString: 'parentId='+id});
