@@ -1,9 +1,6 @@
 <h1 mat-dialog-title>Upload a file</h1>
 
 <mat-dialog-content>
-	<!--mat-form-field class="example-full-width">
-		<input matInput type="file" placeholder="Choose File" (change)="onSelectFile($event)">
-	</mat-form-field-->
 	<mat-form-field floatPlaceholder="never">
 		<input [hidden]="true" (change)="onSelectFile($event)" type="file" accept="all/*" #fileSelect>
 		<input readonly matInput [(ngModel)]="filename" placeholder="Select file..."/>
@@ -15,7 +12,6 @@
 			<mat-icon>file_upload</mat-icon>
 		</button>
 	</mat-form-field>
-
 </mat-dialog-content>
 
 <mat-dialog-actions>

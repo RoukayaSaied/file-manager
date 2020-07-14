@@ -3,7 +3,4 @@ export class Item {
 	parentId: string;
 	name: string;
 	folder: boolean;
-	creation: string;
-	modification: string;
-	//_links : any;
 }
